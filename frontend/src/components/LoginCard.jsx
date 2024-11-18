@@ -20,10 +20,34 @@ import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import authScreenAtom from './atoms/Authatoms'
+import { showHooks } from './hooks/showHooks'
+import userAtom from './atoms/userAtoms'
 
 export default function LoginCard() {
     const [showPassword, setShowPassword] = useState(false)
     const changeAuthState = useSetRecoilState(authScreenAtom)
+    const setUser = useSetRecoilState(userAtom);
+    const toast = showHooks();
+    const handleLogin = async () => {
+        try {
+            const res = await fetch('/api/users/login', {
+                method: 'POST',
+                headers: {
+                    "Content": "application/json"
+                }
+            })
+            const data = await res.json();
+            if (data.error) {
+                toast('error', data.error, "error")
+                return;
+            }
+            localStorage.setItem("user-threads", JSON.stringify(data));
+            setUser(data);
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
     return (
         <Flex
             minH={'100vh'}
@@ -71,7 +95,9 @@ export default function LoginCard() {
                                 color={'white'}
                                 _hover={{
                                     bg: 'green.500',
-                                }}>
+
+                                }}
+                                onClick={handleLogin()}>
                                 Log In
                             </Button>
                         </Stack>
