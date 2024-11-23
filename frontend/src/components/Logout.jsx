@@ -10,7 +10,7 @@ export const Logout = () => {
     const showToast = showHooks();
     const handleOut = async () => {
         try {
-            const res =  await fetch('/api/users/logout', {
+            const res = await fetch('/api/users/logout', {
                 method: "POST",
                 headers: {
                     "Content": "application/json"
@@ -21,7 +21,7 @@ export const Logout = () => {
                 showToast("Errro", data.error, "error")
                 return;
             }
-            localStorage.removeItem('user-threads')
+            localStorage.removeItem("user-threads") 
             setUser(null);
         } catch (error) {
             console.log(error);
@@ -30,7 +30,7 @@ export const Logout = () => {
     }
     return (
         <>
-            <Button position={'fixed'} top={'30px'} right={'30px'} size={'sm'} onClick={handleOut()}>
+            <Button position={'fixed'} top={'30px'} right={'30px'} size={'sm'} onClick={handleOut}>
                 Logout
             </Button>
         </>
