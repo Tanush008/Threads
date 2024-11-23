@@ -28,19 +28,27 @@ export default function LoginCard() {
     const changeAuthState = useSetRecoilState(authScreenAtom)
     const setUser = useSetRecoilState(userAtom);
     const toast = showHooks();
+    const [inputs, setInputs] = useState({
+        username: "",
+        password: "",
+    })
     const handleLogin = async () => {
         try {
-            const res = await fetch('/api/users/login', {
+            const res = await fetch("/api/users/login", {
                 method: 'POST',
                 headers: {
                     "Content": "application/json"
-                }
+                },
+                body: JSON.stringify(inputs),
             })
+            // console.log(inputs);
+            
             const data = await res.json();
             if (data.error) {
                 toast('error', data.error, "error")
                 return;
             }
+            // console.log(data); 
             localStorage.setItem("user-threads", JSON.stringify(data));
             setUser(data);
         } catch (error) {
@@ -70,14 +78,20 @@ export default function LoginCard() {
                     boxShadow={'lg'}
                     p={8}>
                     <Stack spacing={4}>
-                        <FormControl id="email" isRequired>
-                            <FormLabel>Email address</FormLabel>
-                            <Input type="email" />
+                        <FormControl isRequired>
+                            <FormLabel>UserName</FormLabel>
+                            <Input type="text"
+                                onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+                                value={inputs.username}
+                            />
                         </FormControl>
-                        <FormControl id="password" isRequired>
+                        <FormControl isRequired>
                             <FormLabel>Password</FormLabel>
                             <InputGroup>
-                                <Input type={showPassword ? 'text' : 'password'} />
+                                <Input type={showPassword ? 'text' : 'password'}
+                                    onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+                                    value={inputs.password}
+                                />
                                 <InputRightElement h={'full'}>
                                     <Button
                                         variant={'ghost'}
@@ -97,13 +111,13 @@ export default function LoginCard() {
                                     bg: 'green.500',
 
                                 }}
-                                onClick={handleLogin()}>
+                                onClick={handleLogin}>
                                 Log In
                             </Button>
                         </Stack>
                         <Stack pt={6}>
                             <Text align={'center'} >
-                                Does'nt have an Account? <Link color={'blue.400'} onClick={() => changeAuthState('SignUp')}>Sign In </Link>
+                                Does'nt have an Account? <Link color={'blue.400'} onClick={() => changeAuthState('SignUp')}>Sign Up </Link>
                             </Text>
                         </Stack>
                     </Stack>

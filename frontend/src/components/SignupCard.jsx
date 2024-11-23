@@ -46,12 +46,12 @@ export default function SignupCard() {
         body: JSON.stringify(input),
       });
       const data = await res.json();
-      localStorage.setItem("user-threads", JSON.stringify(data));
-      setUser(data);
       if (data.error) {
         toast("Error", data.error, "error")
         return;
       }
+      localStorage.setItem("user-threads", JSON.stringify(data));
+      setUser(data);
       // console.log(data);
 
     } catch (error) {

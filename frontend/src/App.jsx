@@ -18,14 +18,16 @@ function App() {
       <Header />
       <Container maxW='620px'>
         <Routes>
-          <Route path='/Home' element={user ? <HomePages /> : <Navigate to='/auth' />} />
+          <Route path='/' element={user ? <HomePages /> : <Navigate to='/auth' />} />
+          {/* <Route path='/' element={<HomePages />} /> */}
           <Route path='/:username' element={<UserPages />} />
           <Route path='/:username/post/:pid' element={<PostPages />} />
           <Route path='/auth' element={!user ? <AuthPages /> : <Navigate to='/' />} />
+          {/* <Route path='/auth' element={<AuthPages />} /> */}
           {/* <Route path='/updateProfile' element={user ? <UpdateProfile /> : <Navigate to='/auth' />} /> */}
-          <Route path='/update' element={<UpdateProfile />}/>
+          {/* <Route path='/update' element={<UpdateProfile />} /> */}
         </Routes>
-        <Logout />
+         <Logout />
       </Container>
     </>
   )
