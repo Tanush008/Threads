@@ -95,7 +95,7 @@ export default function SignupCard() {
                     value={input.username}
                   />
                 </FormControl>
-              </Box>
+              </Box>  
             </HStack>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>

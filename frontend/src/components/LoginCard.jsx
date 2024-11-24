@@ -37,12 +37,12 @@ export default function LoginCard() {
             const res = await fetch("/api/users/login", {
                 method: 'POST',
                 headers: {
-                    "Content": "application/json"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(inputs),
             })
             // console.log(inputs);
-            
+
             const data = await res.json();
             if (data.error) {
                 toast('error', data.error, "error")

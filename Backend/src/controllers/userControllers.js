@@ -61,7 +61,7 @@ export const login = async (req, res) => {
         message: "Incorrect email or password",
         success: false,
       });
-    } 
+    }
     const isPassword = await bcrypt.compare(password, user.password);
     if (!isPassword) {
       return res.status(400).json({
@@ -73,21 +73,25 @@ export const login = async (req, res) => {
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-    res
-      .status(200)
-      .cookie("token", token, {
-        maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpsOnly: true,
-        sameStrict: "strict",
-      })
-      .json({
-        _id: user._id,
-        name: user.name,
-        username: user.username,
-        message: "login successfully",
-        success: true,
-        token: token,
-      });
+    if (user) {
+      res
+        .status(200)
+        .cookie("token", token, {
+          maxAge: 1 * 24 * 60 * 60 * 1000,
+          httpsOnly: true,
+          sameStrict: "strict",
+        })
+        .json({
+          _id: user._id,
+          name: user.name,
+          username: user.username,
+          bio: user.bio,
+          email: user.email,
+          message: "login successfully",
+          success: true,
+          token: token,
+        });
+    }
   } catch (error) {
     console.log(error);
   }
