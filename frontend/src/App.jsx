@@ -24,10 +24,10 @@ function App() {
           <Route path='/:username/post/:pid' element={<PostPages />} />
           <Route path='/auth' element={!user ? <AuthPages /> : <Navigate to='/' />} />
           {/* <Route path='/auth' element={<AuthPages />} /> */}
-          {/* <Route path='/updateProfile' element={user ? <UpdateProfile /> : <Navigate to='/auth' />} /> */}
+          <Route path='/updateProfile' element={user ? <UpdateProfile /> : <Navigate to='/auth' />} />
           {/* <Route path='/update' element={<UpdateProfile />} /> */}
         </Routes>
-         <Logout />
+        {user && <Logout/>}
       </Container>
     </>
   )
