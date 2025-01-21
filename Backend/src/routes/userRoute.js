@@ -13,6 +13,6 @@ router.route("/signup").post(signUp);
 router.route("/login").post(login);
 router.route("/logout").post(logout);
 router.route("/follow/:id").post(isAuthenticated, followAndUnfollow);
-router.route("/update/:id").post(isAuthenticated, updateProfile);
-router.route("/profile/:id").get(isAuthenticated, getProfile);
+router.route("/update/:id").put(isAuthenticated, updateProfile);
+router.route("/profile/:query").get(isAuthenticated, getProfile);
 export default router;

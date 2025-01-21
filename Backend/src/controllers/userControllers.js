@@ -1,6 +1,8 @@
 import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
+import mongoose from "mongoose";
 export const signUp = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
@@ -147,6 +149,7 @@ export const followAndUnfollow = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { username, name, password, email, bio } = req.body;
+    let { profilePic } = req.body;
     const userId = req.user._id;
     let user = await User.findById(userId);
     if (!user) {
@@ -164,10 +167,21 @@ export const updateProfile = async (req, res) => {
       const hashedPassword = bcrypt.hash(password, 10);
       user.password = hashedPassword;
     }
+    if (profilePic) {
+      if (user.profilePic) {
+        await cloudinary.uploader.destroy(
+          user.profilePic.split("/").pop().split(".")[0]
+        );
+      }
+      const uploadRes = await cloudinary.uploader.upload(profilePic);
+      profilePic = uploadRes.secure_url;
+    }
+
     (user.password = password || user.password),
       (user.name = name || user.name),
       (user.email = email || user.email),
       (user.bio = bio || user.bio),
+      (user.profilePic = profilePic || user.profilePic),
       (user.username = username || user.username);
     user = await user.save();
     res.status(200).json({
@@ -181,17 +195,25 @@ export const updateProfile = async (req, res) => {
 };
 
 export const getProfile = async (req, res) => {
+  const { query } = req.params;
   try {
-    const userId = req.params.id;
-    const user = await User.findById(userId)
-      .select("-password")
-      .select("-updatedAt");
+    let user;
+    if (mongoose.Types.ObjectId.isValid(query)) {
+      user = await User.findOne({ _id: query })
+        .select("-password")
+        .select("-updatedAt");
+    } else {
+      user = await User.findOne({ username: query })
+        .select("-password")
+        .select("-updatedAt");
+    }
     if (!user) {
       return res.status(400).json({
         message: "User not found",
-        succeess: false,
       });
     }
+    // console.log(user.name);
+    
     res.status(200).json({
       message: "User found",
       user,

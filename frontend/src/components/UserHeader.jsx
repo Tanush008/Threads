@@ -2,75 +2,127 @@ import { Avatar, Box, Flex, Link, Menu, MenuButton, MenuItem, MenuList, Portal, 
 import React from 'react'
 import { BsInstagram } from 'react-icons/bs'
 import { CgMoreO } from 'react-icons/cg'
-const UserHeader = () => {
-    const toast = useToast()
-    const copyUrl = () => {
-        const currentUrl = window.location.href;
-        navigator.clipboard.writeText(currentUrl).then(() => {
+
+const UserHeader = ({ user }) => {
+    const toast = useToast();
+    // const currentUser = useRecoilValue(userAtom); // logged in user
+    // const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
+
+    const copyURL = () => {
+        const currentURL = window.location.href;
+        navigator.clipboard.writeText(currentURL).then(() => {
             toast({
-                title: 'Account created.',
-                description: "URL copied.",
-                status: 'success',
-                duration: 300,
+                title: "Success.",
+                status: "success",
+                description: "Profile link copied.",
+                duration: 3000,
                 isClosable: true,
-            })
-        })
-    }
+            });
+        });
+    };
+    
+
+    console.log(user);
+    // if (!user) {
+    //     return <Text>Loading user details...</Text>;
+    // if (!user.name) {
+    //     return <Text>User name is missing!</Text>;
+    // }}
+    
     return (
-        <VStack alignItems={"start"} gap={4}>
+        <VStack gap={4} alignItems={"start"}>
             <Flex justifyContent={"space-between"} w={"full"}>
                 <Box>
-                    <Text fontSize={"2xl"} fontWeight={"bold"}>Mark-Zuckerberg</Text>
-                    <Flex alignItems={"center"} gap={3}>
-                        <Text fontSize={"sm"}>markzuckerberg</Text>
-                        <Text fontSize={"xs"} bg={'gray.dark'} color={"gray.light"} p={1} borderRadius={"full"}>threads.next</Text>
+                    <Text fontSize={"2xl"} fontWeight={"bold"}>
+                       dfaaa {user.name}
+                    </Text>
+                    <Flex gap={2} alignItems={"center"}>
+                        <Text fontSize={"sm"}>dfaadfas{user.username}</Text>
+                        <Text fontSize={"xs"} bg={"gray.dark"} color={"gray.light"} p={1} borderRadius={"full"}>
+                            threads.net
+                        </Text>
                     </Flex>
                 </Box>
                 <Box>
-                    <Avatar name="Mark Zuckerbert"
-                        src="public/zuck-avatar.png"
-                        size={{
-                            base:'md',
-                            md: 'xl'
-                        }} />
+                    {user.profilePic && (
+                        <Avatar
+                            name={user.name}
+                            src={user.profilePic}
+                            size={{
+                                base: "md",
+                                md: "xl",
+                            }}
+                        />
+                    )}
+                    {!user.profilePic && (
+                        <Avatar
+                            name={user.name}
+                            src='https://bit.ly/broken-link'
+                            size={{
+                                base: "md",
+                                md: "xl",
+                            }}
+                        />
+                    )}
                 </Box>
             </Flex>
 
-            <Text>Co-founder, executive chairman and CEO of Meta Platforms.</Text>
-            <Flex justifyContent={"space-between"} w={"full"}>
-                <Flex gap={2} alignItems={"center"}>
-                    <Text color={"gray.light"}>3.2K followers</Text>
-                    <Box w={1} h={1} bg={'gray.light'} borderRadius={"full"} ></Box>
-                    <Link color={'gray.light'}>instagram.com</Link>
-                </Flex>
+            <Text>{user.bio}</Text>
+            {/* 
+			{currentUser?._id === user._id && (
+				<Link as={RouterLink} to='/update'>
+					<Button size={"sm"}>Update Profile</Button>
+				</Link>
+			)} */}
+            {/* {currentUser?._id !== user._id && (
+				<Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
+					{following ? "Unfollow" : "Follow"}
+				</Button>
+			)} */}
+            <Flex w={"full"} justifyContent={"space-between"}>
+                {/* <Flex gap={2} alignItems={"center"}>
+					<Text color={"gray.light"}>{user.followers.length} followers</Text>
+					<Box w='1' h='1' bg={"gray.light"} borderRadius={"full"}></Box>
+					<Link color={"gray.light"}>instagram.com</Link>
+				</Flex> */}
                 <Flex>
                     <Box className='icon-container'>
                         <BsInstagram size={24} cursor={"pointer"} />
+                    </Box>
+                    <Box className='icon-container'>
                         <Menu>
                             <MenuButton>
-                                <Box className='icon-container_2'>
-                                    <CgMoreO size={24} cursor={"pointer"} />
-                                </Box>
+                                <CgMoreO size={24} cursor={"pointer"} />
                             </MenuButton>
                             <Portal>
                                 <MenuList bg={"gray.dark"}>
-                                    <MenuItem bg={"gray.dark"} onClick={copyUrl}>Copy Link</MenuItem>
+                                    <MenuItem bg={"gray.dark"} onClick={copyURL}>
+                                        Copy link
+                                    </MenuItem>
                                 </MenuList>
                             </Portal>
                         </Menu>
                     </Box>
                 </Flex>
             </Flex>
+
             <Flex w={"full"}>
-                <Flex flex={1} borderBottom={"1.5px solid white"} justifyContent={"center"} pb="3" cursor={"pointer"}>
-                    <Text fontWeight={"bold"}>Threads</Text>
+                <Flex flex={1} borderBottom={"1.5px solid white"} justifyContent={"center"} pb='3' cursor={"pointer"}>
+                    <Text fontWeight={"bold"}> Threads</Text>
                 </Flex>
-                <Flex flex={1} borderBottom={"1px solid white"} justifyContent={"center"} color={"gray.light"} pb="3" cursor={"pointer"}>
-                    <Text fontWeight={"bold"}>Replies</Text>
+                <Flex
+                    flex={1}
+                    borderBottom={"1px solid gray"}
+                    justifyContent={"center"}
+                    color={"gray.light"}
+                    pb='3'
+                    cursor={"pointer"}
+                >
+                    <Text fontWeight={"bold"}> Replies</Text>
                 </Flex>
             </Flex>
-        </VStack >
-    )
-}
+        </VStack>
+    );
+};
 
-export default UserHeader
+export default UserHeader;

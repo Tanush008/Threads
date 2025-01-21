@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import userRoute from "./src/routes/userRoute.js";
 import postRoute from "./src/routes/postRoute.js";
 import cors from "cors";
+import { v2 as cloudinary } from "cloudinary";
 const app = express();
 // const cookieParser = require('cookie-parser');
 dotenv.config({});
@@ -17,6 +18,16 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(cookieParser());
+// cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+// console.log(process.env.CLOUDINARY_API_KEY);
+// console.log(process.env.CLOUDINARY_API_SECRET);
+// console.log(process.env.CLOUDINARY_CLOUD_NAME);
+
 app.use("/api/users", userRoute);
 app.use("/api/users/posts", postRoute);
 app.use(express.urlencoded({ extended: true }));
