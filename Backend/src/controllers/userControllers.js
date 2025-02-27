@@ -200,26 +200,28 @@ export const getProfile = async (req, res) => {
     let user;
     if (mongoose.Types.ObjectId.isValid(query)) {
       user = await User.findOne({ _id: query })
-        .select("-password")
-        .select("-updatedAt");
+        .select("-password -updatedAt");
     } else {
       user = await User.findOne({ username: query })
-        .select("-password")
-        .select("-updatedAt");
+        .select("-password -updatedAt");
     }
     if (!user) {
       return res.status(400).json({
         message: "User not found",
+        success: false
       });
     }
-    // console.log(user.name);
     
     res.status(200).json({
       message: "User found",
       user,
-      success: true,
+      success: true
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false
+    });
   }
 };

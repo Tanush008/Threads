@@ -7,12 +7,14 @@ const isAuthenticated = async (req, res, next) => {
     const token = req.cookies.token;
     // console.log(req.cookies);
     // console.log(process.env.JWT_SECRET);
+    console.log(token);
     if (!token) {
       return res.status(400).json({
         message: "user not authenticated",
         success: false,
       });
     }
+
     const decode = jwt.verify(token, process.env.JWT_SECRET);
     if (!decode) {
       return res.status(400).json({
