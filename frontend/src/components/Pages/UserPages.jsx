@@ -4,36 +4,38 @@ import UserPost from '../UserPost'
 import { useParams } from 'react-router-dom';
 import { showHooks } from '../hooks/showHooks';
 const UserPages = () => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({
+        name: "",
+        username: ""
+    });
     const toast = showHooks();
     const { username } = useParams();
-    useEffect(() => {   
-        const getUser = async () => {
+
+    useEffect(() => {
+        const getPosts = async () => {
+            if (!user) return;
+            // setFetchingPosts(true);
             try {
-                const res = await fetch(`/api/users/profile/${username}`)
-                // console.log(res);
-                // console.log(username);
+                const res = await fetch(`/api/users/profile/${username}`);
                 const data = await res.json();
-                console.log(data.name);
-                if (data.error) {
-                    toast('Error', data.error, 'error')
-                    return;
-                }
-                setUser(data)
+                console.log(data);
+                setUser(data);
             } catch (error) {
+                // showToast("Error", error.message, "error");
                 console.log(error);
+
+                // setUser([]);
             }
-        }
-        getUser();
+        };
+        getPosts();
     }, [username, toast])
     if (!user) {
         return null;
     }
 
-    
     return (
         <>
-            <UserHeader user={user} />
+            <UserHeader user={user}/>
             <UserPost likes={455} postImages={'public/post1.png'} postTitle={"This my first post"} replies={213} />
             <UserPost likes={332} postImages={'public/post2.png'} postTitle={"@ post"} replies={123} />
             <UserPost likes={443} postTitle={"Helloo"} replies={222} />

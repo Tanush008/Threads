@@ -12,7 +12,7 @@ import UpdateProfile from './components/Pages/UpdateProfile'
 
 function App() {
   const user = useRecoilValue(userAtom);
-  console.log(user);
+  // console.log(user);
   return (
     <>
       <Header />

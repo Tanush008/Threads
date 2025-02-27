@@ -20,9 +20,7 @@ const UserHeader = ({ user }) => {
             });
         });
     };
-    
-
-    console.log(user);
+    // console.log(user);
     // if (!user) {
     //     return <Text>Loading user details...</Text>;
     // if (!user.name) {
@@ -34,10 +32,10 @@ const UserHeader = ({ user }) => {
             <Flex justifyContent={"space-between"} w={"full"}>
                 <Box>
                     <Text fontSize={"2xl"} fontWeight={"bold"}>
-                       dfaaa {user.name}
+                        {user.name}
                     </Text>
                     <Flex gap={2} alignItems={"center"}>
-                        <Text fontSize={"sm"}>dfaadfas{user.username}</Text>
+                        <Text fontSize={"sm"}>{user?.username || "Loading..."}</Text>
                         <Text fontSize={"xs"} bg={"gray.dark"} color={"gray.light"} p={1} borderRadius={"full"}>
                             threads.net
                         </Text>
